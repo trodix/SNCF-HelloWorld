@@ -4,9 +4,9 @@
             <div class="row">
                 <div class="col-12 form-group">
                     <h2>Départ</h2>
-                    <input list="gares" v-model="gare_start" v-on:input="this.getGares(gare_start)" id="gare_start" name="gare_start" class="form-control" placeholder="Choisir une gare de départ"/>
+                    <input list="gares" v-model="gareStartSelected" v-on:input="getGaresStart(gareStartSelected)" id="gareStartSelected" name="gareStartSelected" class="form-control" placeholder="Choisir une gare de départ"/>
                     <datalist id="gares">
-                        <option v-for="gare in gares" :key="gare.id" :id="gare.id" :value="gare.name"></option>
+                        <option v-for="gare in garesByNameStart" :key="gare.id" :id="gare.id" :value="gare.name"></option>
                     </datalist>
                 </div>
             </div>
@@ -14,9 +14,9 @@
             <div class="row">
                 <div class="col-12 form-group">
                     <h2>Arivée</h2>
-                    <input list="gares" v-model="gare_end" id="gare_end" name="gare_end" class="form-control" placeholder="Choisir une gare d'arrivé"/>
+                    <input list="gares" v-model="gareEndSelected" v-on:input="getGaresEnd(gareEndSelected)" id="gareEndSelected" name="gareEndSelected" class="form-control" placeholder="Choisir une gare d'arrivé"/>
                     <datalist id="gares">
-                        <option :id="gare.id" v-for="gare in gares" :key="gare.id" :value="gare.name"></option>
+                        <option :id="gare.id" v-for="gare in garesByNameEnd" :key="gare.id" :value="gare.name"></option>
                     </datalist>
                 </div>
             </div>
@@ -35,17 +35,29 @@ export default {
         return {
             records: [],
             gares: [],
-            gare_start: "",
-            gare_end: ""
+            garesByNameStart: [],
+            garesByNameEnd: [],
+            gareStartSelected: "",
+            gareEndSelected: ""
         }
     },
     methods: {
-        getGares(name) {
-            console.log(`#Getgares(${name})`);
+        getGaresStart(name) {
+            console.log(`#GetgaresStart(${name})`);
+            this.garesByNameStart = this.filter(this.gares, name);
+        },
+        getGaresEnd(name) {
+            console.log(`#GetgaresEnd(${name})`);
+            this.garesByNameEnd = this.filter(this.gares, name);
         },
         getHoraires(depart, arrive) {
 
         },
+        filter(arrayData, item) {
+            arrayData.filter((item) => {
+                return item.name.toLowerCase().indexOf(item.name.toLowerCase()) > -1;
+            });
+        }
         
     },
     created() {
@@ -61,6 +73,8 @@ export default {
                         }
                     );
                 });
+                this.garesByNameStart = this.gares;
+                this.garesByNameEnd = this.gares;
             });
         });
     }
