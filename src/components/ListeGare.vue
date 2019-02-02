@@ -98,14 +98,14 @@ export default {
         },
         filter(item) {
             setTimeout(() => {
-                this.$http.get("https://ressources.data.sncf.com/api/records/1.0/search/?dataset=liste-des-gares&q="+item+"&lang=FR&refine.voyageurs=O").then((response) => {
+                this.$http.get("https://ressources.data.sncf.com/api/records/1.0/search/?dataset=referentiel-gares-voyageurs&q="+item+"&sort=intitule_gare&facet=agence_gare&facet=region_sncf&facet=unite_gare&facet=departement&facet=segment_drg").then((response) => {
                     this.records = response.body.records;
                     this.gares = [];
                     this.records.forEach(element => {
                         this.gares.push(
                             {
                                 id: element.recordid,
-                                name: element.fields.libelle_gare
+                                name: element.fields.intitule_gare
                             }
                         );
                     });
@@ -130,14 +130,14 @@ export default {
     },
     created() {
         console.clear();
-        this.$http.get("https://ressources.data.sncf.com/api/records/1.0/search/?dataset=liste-des-gares&lang=FR&refine.voyageurs=O&timezone=Europe/Paris").then((response) => {
+        this.$http.get("https://ressources.data.sncf.com/api/records/1.0/search/?dataset=referentiel-gares-voyageurs&sort=intitule_gare&facet=agence_gare&facet=region_sncf&facet=unite_gare&facet=departement&facet=segment_drg").then((response) => {
             console.log("response", response);
             this.records = response.body.records;
             this.records.forEach(element => {
                 this.gares.push(
                     {
                         id: element.recordid,
-                        name: element.fields.libelle_gare
+                        name: element.fields.intitule_gare
                     }
                 );
             });
